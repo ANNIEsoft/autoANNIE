@@ -637,11 +637,11 @@ def grid_BC(user, TA_tar_name, name_TA, input_path, run_type):
     file.write('echo "Moving the output files to CONDOR OUTPUT..." >> ${DUMMY_OUTPUT_FILE}\n')
     file.write('${JSB_TMP}/ifdh.sh cp -D /srv/logfile*.txt $CONDOR_DIR_OUTPUT     # log files\n')
     file.write('${JSB_TMP}/ifdh.sh cp -D /srv/*.ntuple.root $CONDOR_DIR_OUTPUT    # Modify: any .root files etc.. that are produced from your toolchain\n')
-    if run_type == 'beam' or run_type == 'laser' or run_type == 'beam_39':
-        file.write('${JSB_TMP}/ifdh.sh cp -D /srv/*.lappd.root $CONDOR_DIR_OUTPUT     # LAPPD BeamCluster\n')
-        file.write('${JSB_TMP}/ifdh.sh cp -D /srv/FilteredAllLAPPDData* $CONDOR_DIR_OUTPUT    # Filtered LAPPD Data\n')
-    if run_type == 'beam' or run_type == 'cosmic' or run_type == 'beam_39':     # only cosmic and MRD runs will have MRD data streams
-        file.write('${JSB_TMP}/ifdh.sh cp -D /srv/FilteredMRDData* $CONDOR_DIR_OUTPUT    # Filtered MRD Data\n')
+    #if run_type == 'beam' or run_type == 'laser' or run_type == 'beam_39':
+        #file.write('${JSB_TMP}/ifdh.sh cp -D /srv/*.lappd.root $CONDOR_DIR_OUTPUT     # LAPPD BeamCluster\n')
+        #file.write('${JSB_TMP}/ifdh.sh cp -D /srv/FilteredAllLAPPDData* $CONDOR_DIR_OUTPUT    # Filtered LAPPD Data\n')
+    #if run_type == 'beam' or run_type == 'cosmic' or run_type == 'beam_39':     # only cosmic and MRD runs will have MRD data streams
+        #file.write('${JSB_TMP}/ifdh.sh cp -D /srv/FilteredMRDData* $CONDOR_DIR_OUTPUT    # Filtered MRD Data\n')
     file.write('\n')
     file.write('echo "" >> ${DUMMY_OUTPUT_FILE}\n')
     file.write('echo "Input:" >> ${DUMMY_OUTPUT_FILE}\n')
@@ -715,10 +715,10 @@ def container_BC(name_TA, input_path, run_type):
     file.write('echo "" >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
     file.write('\n')
 
-    if run_type == 'beam' or run_type == 'laser' or run_type == 'beam_39':
-        file.write('# place the LAPPD pedestal folder in the TA folder\n')
-        file.write('\cp -r /srv/${PED} /srv/' + name_TA + '/ \n')
-        file.write('\n')
+    #if run_type == 'beam' or run_type == 'laser' or run_type == 'beam_39':
+    #    file.write('# place the LAPPD pedestal folder in the TA folder\n')
+    #    file.write('\cp -r /srv/${PED} /srv/' + name_TA + '/ \n')
+    #    file.write('\n')
 
     file.write('# enter ToolAnalysis directory\n')
     file.write('cd ' + name_TA + '/\n')
@@ -735,18 +735,18 @@ def container_BC(name_TA, input_path, run_type):
     file.write('cd ../../\n')
     file.write('\n')
 
-    if run_type == 'beam' or run_type == 'laser' or run_type == 'beam_39':
+    #if run_type == 'beam' or run_type == 'laser' or run_type == 'beam_39':
         # Append LAPPD Pedestal folder to Configs in LAPPDProcessedAna
-        file.write('# append Configs for LAPPD Pedestal file \n')
-        file.write('echo "LAPPD Pedestal arg: ${PED}" >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
-        file.write('echo "LAPPD Pedestal folder contents (${PED}): " >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
-        file.write('ls ${PED} >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
-        file.write("grep '^[[:space:]]*PedinputfileTXT[[:space:]]' configfiles/LAPPDProcessedAna/Configs >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n")
-        file.write('sed -i "/^[[:space:]]*#/! s|^[[:space:]]*PedinputfileTXT[[:space:]].*|PedinputfileTXT ${PED}/P|" configfiles/LAPPDProcessedAna/Configs\n')
-        file.write('echo "PedinputfileTXT line (changed): " >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
-        file.write("grep '^[[:space:]]*PedinputfileTXT[[:space:]]' configfiles/LAPPDProcessedAna/Configs >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n")
-        file.write('echo "" >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
-        file.write('\n')
+    #    file.write('# append Configs for LAPPD Pedestal file \n')
+    #    file.write('echo "LAPPD Pedestal arg: ${PED}" >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
+    #    file.write('echo "LAPPD Pedestal folder contents (${PED}): " >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
+    #    file.write('ls ${PED} >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
+    #    file.write("grep '^[[:space:]]*PedinputfileTXT[[:space:]]' configfiles/LAPPDProcessedAna/Configs >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n")
+    #    file.write('sed -i "/^[[:space:]]*#/! s|^[[:space:]]*PedinputfileTXT[[:space:]].*|PedinputfileTXT ${PED}/P|" configfiles/LAPPDProcessedAna/Configs\n')
+    #    file.write('echo "PedinputfileTXT line (changed): " >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
+    #    file.write("grep '^[[:space:]]*PedinputfileTXT[[:space:]]' configfiles/LAPPDProcessedAna/Configs >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n")
+    #    file.write('echo "" >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
+    #    file.write('\n')
 
     file.write('# set up paths and libraries\n')
     file.write('source Setup.sh\n')
@@ -757,27 +757,27 @@ def container_BC(name_TA, input_path, run_type):
     file.write('\n')
 
     # Only run the filtering over beam runs (we only care about producing LAPPD + MRD filtered runs for beam)
-    if run_type == 'beam' or run_type == 'beam_39':
-        file.write('# Run the event filter for the LAPPD and MRD\n')
-        file.write('rm configfiles/LAPPDProcessedFilter/list.txt\n')
-        file.write('\cp configfiles/BeamClusterAnalysis/my_inputs.txt configfiles/LAPPDProcessedFilter/list.txt\n')
-        file.write('echo "configfiles/LAPPDProcessedFilter/list.txt:" >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
-        file.write('cat configfiles/LAPPDProcessedFilter/list.txt >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
-        file.write('echo "" >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
-        file.write('./Analyse configfiles/LAPPDProcessedFilter/ToolChainConfig >> /srv/logfile_Filter_${PART_NAME}_${PI}_${PF}.txt 2>&1 \n')
-        file.write('\n')
+    #if run_type == 'beam' or run_type == 'beam_39':
+    #    file.write('# Run the event filter for the LAPPD and MRD\n')
+    #    file.write('rm configfiles/LAPPDProcessedFilter/list.txt\n')
+    #    file.write('\cp configfiles/BeamClusterAnalysis/my_inputs.txt configfiles/LAPPDProcessedFilter/list.txt\n')
+    #    file.write('echo "configfiles/LAPPDProcessedFilter/list.txt:" >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
+    #    file.write('cat configfiles/LAPPDProcessedFilter/list.txt >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
+    #    file.write('echo "" >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
+    #    file.write('./Analyse configfiles/LAPPDProcessedFilter/ToolChainConfig >> /srv/logfile_Filter_${PART_NAME}_${PI}_${PF}.txt 2>&1 \n')
+    #    file.write('\n')
 
-        file.write('# Run BC for the filtered data\n')
-        file.write('rm configfiles/BeamClusterAnalysis/my_inputs.txt\n')
-        file.write('ls -v FilteredAllLAPPDData >> configfiles/BeamClusterAnalysis/my_inputs.txt\n')
-        file.write('cd configfiles/BeamClusterAnalysis\n')
-        file.write('python3 configLAPPD.py ${PART_NAME} ${PI} ${PF} ' + run_type + '\n')
-        file.write('cd ../../\n')
-        file.write('echo "File present in filtered my_inputs.txt:" >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
-        file.write('cat configfiles/BeamClusterAnalysis/my_inputs.txt >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
-        file.write('echo "" >> /srv/logfile_BC_Filtered_${PART_NAME}_${PI}_${PF}.txt\n')
-        file.write('./Analyse configfiles/BeamClusterAnalysis/ToolChainConfig >> /srv/logfile_BC_Filtered_${PART_NAME}_${PI}_${PF}.txt 2>&1 \n')
-        file.write('\n')
+    #    file.write('# Run BC for the filtered data\n')
+    #    file.write('rm configfiles/BeamClusterAnalysis/my_inputs.txt\n')
+    #    file.write('ls -v FilteredAllLAPPDData >> configfiles/BeamClusterAnalysis/my_inputs.txt\n')
+    #    file.write('cd configfiles/BeamClusterAnalysis\n')
+    #    file.write('python3 configLAPPD.py ${PART_NAME} ${PI} ${PF} ' + run_type + '\n')
+    #    file.write('cd ../../\n')
+    #    file.write('echo "File present in filtered my_inputs.txt:" >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
+    #    file.write('cat configfiles/BeamClusterAnalysis/my_inputs.txt >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
+    #    file.write('echo "" >> /srv/logfile_BC_Filtered_${PART_NAME}_${PI}_${PF}.txt\n')
+    #    file.write('./Analyse configfiles/BeamClusterAnalysis/ToolChainConfig >> /srv/logfile_BC_Filtered_${PART_NAME}_${PI}_${PF}.txt 2>&1 \n')
+    #    file.write('\n')
 
     file.write('# log files\n')
     file.write('echo "" >> /srv/logfile_${PART_NAME}_${PI}_${PF}.txt\n')
@@ -787,10 +787,10 @@ def container_BC(name_TA, input_path, run_type):
 
     file.write('# copy any produced files to /srv for extraction\n')
     file.write('cp *.ntuple.root /srv/\n')
-    if run_type == 'beam' or run_type == 'beam_39':
-        file.write('cp *.lappd.root /srv/\n')
-        file.write('cp FilteredMRDData /srv/FilteredMRDData_${PART_NAME}_${PI}_${PF}\n')
-        file.write('cp FilteredAllLAPPDData /srv/FilteredAllLAPPDData_${PART_NAME}_${PI}_${PF}\n')
+    #if run_type == 'beam' or run_type == 'beam_39':
+    #    file.write('cp *.lappd.root /srv/\n')
+    #    file.write('cp FilteredMRDData /srv/FilteredMRDData_${PART_NAME}_${PI}_${PF}\n')
+    #    file.write('cp FilteredAllLAPPDData /srv/FilteredAllLAPPDData_${PART_NAME}_${PI}_${PF}\n')
     file.write('\n')
     file.write('# make sure any output files you want to keep are put in /srv or any subdirectory of /srv\n')
     file.write('\n')

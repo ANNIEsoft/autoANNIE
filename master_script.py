@@ -51,16 +51,16 @@ app_path = '/exp/annie/app/users/' + user + '/' + TA_folder                     
 
 scratch_path = '/pnfs/annie/scratch/users/' + user + '/' + grid_sub_dir                            # clone autoANNIE repository/set of grid scripts
 output_path = '/pnfs/annie/scratch/users/' + user + '/' + grid_output                              # general output directory (event building jobs will be outputted directly here)
-BC_scratch_output_path = output_path + 'beamcluster/'                                              # output from the BeamCluster jobs (embedded in folder above)
+BC_scratch_output_path = output_path + 'beamcluster/NCQE/'                                         # output from the BeamCluster jobs (embedded in folder above)
 raw_path = '/pnfs/annie/persistent/raw/raw/'                                                       # raw data location, transferred from the DAQ
 processed_path = '/pnfs/annie/persistent/processed/processingData_EBV2/'                           # general directory for "processed" data, such as BeamFetcher files, ProcessedData, etc...
 
 data_path = processed_path + 'processed_EBV2/'                                                     # Processed Data
 trig_path = '/pnfs/annie/persistent/processed/trigoverlap/'                                        # trigger overlap tar files
-beamcluster_path = processed_path + 'BeamClusterTrees/'                                            # BeamCluster root files
+beamcluster_path = '/pnfs/annie/persistent/users/doran/datasets/NCQE_BEAMCLUSTER_DATA/'            # BeamCluster root files
 beamfetcher_path = processed_path + 'BeamFetcherV2/'                                               # BeamFetcherV2 root files
 lappd_EB_path = processed_path + 'LAPPD_EB_output/'                                                # contains two subdirectories: LAPPDTree and offsetFit
-lappd_BC_path = beamcluster_path + 'LAPPDBeamClusterTrees/'                                        # filtered events w/ LAPPDs stored in root files
+lappd_BC_path = '/pnfs/annie/persistent/users/doran/datasets/NCQE_BEAMCLUSTER_DATA/LAPPDBeamClusterTrees/'  # filtered events w/ LAPPDs stored in root files
 lappd_filter_path = processed_path + 'processed_EBV2_LAPPDFiltered/'                               # filtered, processed data w/ LAPPD events
 mrd_filter_path = processed_path + 'processed_EBV2_MRDFiltered/'                                   # same, for the MRD
 lappd_pedestal_path = '/pnfs/annie/persistent/processed/processingData_EBV2/LAPPD_Pedestal/'       # Pedestal files for the LAPPDs in the BeamCluster jobs
@@ -517,11 +517,11 @@ if which_mode == '2':        # BeamCluster
                     time.sleep(1)
 
                     # any LAPPD-related files will only be created for beam runs. We dont need LAPPD root files or filtered files for laser runs. We can just use the normal BC output.
-                    if run_type == 'beam' or run_type == 'beam_39':
+                    #if run_type == 'beam' or run_type == 'beam_39':
                         # Second, merge the LAPPDBeamCluster files into one
-                        print('\nMerging LAPPDBeamCluster files...\n')
-                        os.system('sh lib/merge_it.sh ' + singularity + ' ' + BC_scratch_output_path + ' ' + runs_to_run[i] + ' ' + 'LAPPD')
-                        time.sleep(1)
+                        #print('\nMerging LAPPDBeamCluster files...\n')
+                        #os.system('sh lib/merge_it.sh ' + singularity + ' ' + BC_scratch_output_path + ' ' + runs_to_run[i] + ' ' + 'LAPPD')
+                        #time.sleep(1)
     
                     # Then copy all the output files
                     
@@ -532,17 +532,17 @@ if which_mode == '2':        # BeamCluster
                     complete_BC += 1
                     time.sleep(1)
 
-                    if run_type == 'beam' or run_type == 'beam_39':
+                    #if run_type == 'beam' or run_type == 'beam_39':
                         # LAPPDBeamCluster
-                        os.system('sh BeamCluster/BC_copy.sh ' + runs_to_run[i] + ' ' + beamcluster_path + ' ' + scratch_path + ' ' + 'LAPPD' + ' ' + lappd_BC_path + ' ' + BC_scratch_output_path + ' ' + lappd_filter_path + ' ' + mrd_filter_path)
-                        time.sleep(1)
+                    #    os.system('sh BeamCluster/BC_copy.sh ' + runs_to_run[i] + ' ' + beamcluster_path + ' ' + scratch_path + ' ' + 'LAPPD' + ' ' + lappd_BC_path + ' ' + BC_scratch_output_path + ' ' + lappd_filter_path + ' ' + mrd_filter_path)
+                    #    time.sleep(1)
                     
                         # Filtered files (LAPPD + MRD)
-                        print('\nTransferring Filtered datasets (MRD + LAPPD)...\n')
-                        os.system('sh BeamCluster/BC_copy.sh ' + runs_to_run[i] + ' ' + beamcluster_path + ' ' + scratch_path + ' ' + 'LAPPD_filter' + ' ' + lappd_BC_path + ' ' + BC_scratch_output_path + ' ' + lappd_filter_path + ' ' + mrd_filter_path)
-                        time.sleep(1)
-                        os.system('sh BeamCluster/BC_copy.sh ' + runs_to_run[i] + ' ' + beamcluster_path + ' ' + scratch_path + ' ' + 'MRD_filter' + ' ' + lappd_BC_path + ' ' + BC_scratch_output_path + ' ' + lappd_filter_path + ' ' + mrd_filter_path)
-                        time.sleep(1)
+                    #    print('\nTransferring Filtered datasets (MRD + LAPPD)...\n')
+                    #    os.system('sh BeamCluster/BC_copy.sh ' + runs_to_run[i] + ' ' + beamcluster_path + ' ' + scratch_path + ' ' + 'LAPPD_filter' + ' ' + lappd_BC_path + ' ' + BC_scratch_output_path + ' ' + lappd_filter_path + ' ' + mrd_filter_path)
+                    #    time.sleep(1)
+                    #    os.system('sh BeamCluster/BC_copy.sh ' + runs_to_run[i] + ' ' + beamcluster_path + ' ' + scratch_path + ' ' + 'MRD_filter' + ' ' + lappd_BC_path + ' ' + BC_scratch_output_path + ' ' + lappd_filter_path + ' ' + mrd_filter_path)
+                    #    time.sleep(1)
                     
                 else:
                     print('\nRun ' + runs_to_run[i] + ' already transferred\n')

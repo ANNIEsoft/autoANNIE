@@ -141,7 +141,7 @@ def read_SQL(SQL_file, runs):
     runconfigs = [data['runconfig'] for data in run_data.values() if data['runconfig'] is not None]
     unique_runconfigs = set(runconfigs)
 
-    beam_run_types = {39, 34, 3}
+    beam_run_types = {39, 34, 3, 45}
     
     # Check for consistent run configurations: we dont want to process beam runs with the same grid resources
     if len(unique_runconfigs) > 1:
@@ -549,13 +549,30 @@ def LAPPD_pedestal(run_number):
     # 2022
     if int(run_number) <= 4173:            # probably lots of data with no LAPPDs
         return '2022_LAPPD40'
-    # 2023
-    elif 4180 <= int(run_number) < 4763:   # no runs between 4173 and 4180
-        return '2023_LAPPD40'
-    # 2024
-    elif int(run_number) >= 4763:          # continuing to present (November 2024)
-        return '2024_LAPPD645839'
     
+    # 2023
+    # TO DO: 
+    # There is a beam off period, where we have series of laser runs.
+    # The pedestal to ACDC mapping is not verified due to unavailable processed files.
+    elif 4180 <= int(run_number) < 4763:   # no runs between 4173 and 4180
+        return '2023_LAPPD406463'
+    
+    # 2024
+    elif 4763 <= int(run_number) < 4809:
+        return '2024_LAPPD39'
+    elif 4809 <= int(run_number) < 4966:          # continuing to July 2024
+        return '2024_LAPPD645839'
+    # TO DO: 
+    # There is a beam off period after R4965, there is a probable swap between the pedestal files.
+    # Have not verified due to unavailable processed files.
+
+    # 2025
+    elif 4966 <= int(run_number) < 5652:     # conitnuing to July 2025
+        return '2025_LAPPD645839'
+
+    # Starting deployment of LAPPD 151 in July 2025
+    elif int(run_number) >= 5652:
+        return '2025_LAPPD151'
 
 # clear scratch output directory (Processed + beamcluster) of old runs if reprocessing
 def clearScratch(run_list, output_path, BC_scratch_output_path, which_one):

@@ -53,11 +53,11 @@ DARK_GRAY = "\033[90m"                 # BC: Processed Data not in persistent
 # from run type name, get number
 def get_run_type(run_type):
     if run_type == 'beam':
-        return ['3', '34', '39']
+        return ['3', '34', '39', '45']
     elif run_type == 'cosmic':
         return ['7', '37']
     elif run_type == 'LED':
-        return ['1', '35']
+        return ['1', '35', '46']
     elif run_type == 'AmBe':
         return ['4', '43', '42', '41', '36']    # TODO: check which ones are relevant
     elif run_type == 'laser':

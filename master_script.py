@@ -61,8 +61,8 @@ lappd_EB_path = processed_path + 'LAPPD_EB_output/'                             
 lappd_BC_path = beamcluster_path + 'LAPPDBeamClusterTrees/'                                        # filtered events w/ LAPPDs stored in root files
 lappd_filter_path = processed_path + 'processed_EBV2_LAPPDFiltered/'                               # filtered, processed data w/ LAPPD events
 mrd_filter_path = processed_path + 'processed_EBV2_MRDFiltered/'                                   # same, for the MRD
-lappd_pedestal_path = '/pnfs/annie/persistent/processed/processingData_EBV2/LAPPD_Pedestal/'       # Pedestal files for the LAPPDs in the BeamCluster jobs
-
+# lappd_pedestal_path = '/pnfs/annie/persistent/processed/processingData_EBV2/LAPPD_Pedestal/'       # Pedestal files for the LAPPDs in the BeamCluster jobs
+lappd_pedestal_path = '/pnfs/annie/persistent/processed/LAPPD_Pedestals_corrected/'
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # 
 print('\n\n**********************************************************\n')

@@ -547,27 +547,21 @@ def LAPPD_pedestal(run_number):
     # taken from Yue's README at: /pnfs/annie/persistent/processed/processed_EBV2_LAPPDFiltered/Pedestal/README
 
     # 2022
-    if int(run_number) <= 4173:            # probably lots of data with no LAPPDs
+    if int(run_number) <= 4173:             # probably lots of data with no LAPPDs
         return '2022_LAPPD40'
     
     # 2023
-    # TO DO: 
-    # There is a beam off period, where we have series of laser runs.
-    # The pedestal to ACDC mapping is not verified due to unavailable processed files.
-    elif 4180 <= int(run_number) < 4763:   # no runs between 4173 and 4180
+    elif 4180 <= int(run_number) < 4727:    # no runs between 4173 and 4180
         return '2023_LAPPD406463'
     
     # 2024
-    elif 4763 <= int(run_number) < 4809:
+    elif 4727 <= int(run_number) < 4809:
         return '2024_LAPPD39'
-    elif 4809 <= int(run_number) < 4966:          # continuing to July 2024
+    elif 4809 <= int(run_number) < 4966:    # continuing to July 2024
         return '2024_LAPPD645839'
-    # TO DO: 
-    # There is a beam off period after R4965, there is a probable swap between the pedestal files.
-    # Have not verified due to unavailable processed files.
 
     # 2025
-    elif 4966 <= int(run_number) < 5652:     # conitnuing to July 2025
+    elif 4966 <= int(run_number) < 5652:    # conitnuing to July 2025
         return '2025_LAPPD645839'
 
     # Starting deployment of LAPPD 151 in July 2025

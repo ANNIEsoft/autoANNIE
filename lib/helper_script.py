@@ -93,6 +93,7 @@ def read_SQL(SQL_file, runs):
     chicago_timezone = pytz.timezone('America/Chicago')
 
     # define daylight savings periods (THIS IS SO CONFUSING)
+    ### Note: We have to upddate the dst_periods manually each year based on the Day Light Saving Time as per the Chicago Time Zone. ######
     dst_periods = {
         2021: (datetime(2021, 3, 14, 2, 0, 0), datetime(2021, 11, 7, 1, 0, 0)),
         2022: (datetime(2022, 3, 13, 2, 0, 0), datetime(2022, 11, 6, 1, 0, 0)),

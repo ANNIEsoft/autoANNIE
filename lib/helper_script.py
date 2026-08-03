@@ -548,15 +548,26 @@ def LAPPD_pedestal(run_number):
     # taken from Yue's README at: /pnfs/annie/persistent/processed/processed_EBV2_LAPPDFiltered/Pedestal/README
 
     # 2022
-    if int(run_number) <= 4173:            # probably lots of data with no LAPPDs
+    if int(run_number) <= 4173:             # probably lots of data with no LAPPDs
         return '2022_LAPPD40'
-    # 2023
-    elif 4180 <= int(run_number) < 4763:   # no runs between 4173 and 4180
-        return '2023_LAPPD40'
-    # 2024
-    elif int(run_number) >= 4763:          # continuing to present (November 2024)
-        return '2024_LAPPD645839'
     
+    # 2023
+    elif 4180 <= int(run_number) < 4727:    # no runs between 4173 and 4180
+        return '2023_LAPPD406463'
+    
+    # 2024
+    elif 4727 <= int(run_number) < 4809:
+        return '2024_LAPPD39'
+    elif 4809 <= int(run_number) < 4966:    # continuing to July 2024
+        return '2024_LAPPD645839'
+
+    # 2025
+    elif 4966 <= int(run_number) < 5652:    # conitnuing to July 2025
+        return '2025_LAPPD645839'
+
+    # Starting deployment of LAPPD 151 in July 2025
+    elif int(run_number) >= 5652:
+        return '2025_LAPPD151'
 
 # clear scratch output directory (Processed + beamcluster) of old runs if reprocessing
 def clearScratch(run_list, output_path, BC_scratch_output_path, which_one):

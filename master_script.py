@@ -4,7 +4,9 @@
 # Date: December 2024
 
 import os
+import glob
 import time
+import subprocess
 from lib import helper_script as hs
 from lib import submit_jobs as sj
 
@@ -118,6 +120,8 @@ usage_verbose_BC = """
 #########################################################################################
 """
 
+# make ifdh script executable for transfers from dCache
+subprocess.run(["chmod", "+x", "lib/ifdh.sh"], check=True)
 
 if which_mode == '1':      # Event building mode
 
@@ -318,8 +322,17 @@ if which_mode == '1':      # Event building mode
     time.sleep(1)
     print('\nNo jobs left! All runs', runs_to_run, 'completed!')
     print('\nCleaning up...\n')   # remove leftover files produced
-    os.system('rm grid_job*.sh'); os.system('rm run_container_job*.sh'); os.system('rm submit_grid_job*.sh')
-    os.system('rm beam.list'); os.system('rm trig.list')
+
+    for pattern in (
+        "grid_job*.sh",
+        "run_container_job*.sh",
+        "submit_grid_job*.sh",
+        "beam.list",
+        "trig.list",
+    ):
+        for filename in glob.glob(pattern):
+            subprocess.run(["./lib/ifdh.sh", "rm", filename], check=True)
+
     time.sleep(1)
     print('\nExiting...\n')
     
@@ -554,10 +567,16 @@ if which_mode == '2':        # BeamCluster
 
     print('\nNo jobs left! All runs', runs_to_run, 'completed!')
     print('\nCleaning up...\n')   # remove leftover files produced
-    os.system('rm BeamCluster/submit_grid_job.sh')
-    os.system('rm BeamCluster/grid_job.sh')
-    os.system('rm BeamCluster/run_container_job.sh')
-    os.system('rm BeamCluster/BeamCluster*.root')
-    os.system('rm BeamCluster/LAPPDBeamCluster*.root')
+
+    for pattern in (
+        "BeamCluster/submit_grid_job.sh",
+        "BeamCluster/grid_job.sh",
+        "BeamCluster/run_container_job.sh",
+        "BeamCluster/BeamCluster*.root",
+        "BeamCluster/LAPPDBeamCluster*.root",
+    ):
+        for filename in glob.glob(pattern):
+            subprocess.run(["./lib/ifdh.sh", "rm", filename], check=True)
+
     time.sleep(1)
     print('\nExiting...\n')

@@ -5,6 +5,8 @@ SCRATCH=$2
 BEAM_PATH=$3
 BIND=$4
 
+IFDH="${SCRATCH}/lib/ifdh.sh"
+
 while read run; do
 
     echo ""
@@ -29,7 +31,7 @@ while read run; do
 
 EOF
 
-    cp beamfetcher_tree.root ${BEAM_PATH}/beamfetcher_${run}.root
+    "${IFDH}" cp beamfetcher_tree.root ${BEAM_PATH}/beamfetcher_${run}.root
 
     ls -lrth ${BEAM_PATH}/beamfetcher_${run}.root
 

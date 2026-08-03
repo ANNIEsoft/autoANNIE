@@ -2,10 +2,23 @@ import os
 import time
 import pytz
 import shutil
+import subprocess
 from datetime import datetime
 
 # --------------------------------------------------------------- #
 # Some helpful functions to call for the automated event building #
+
+
+# Delete a file through ifdh (a path that is already gone is not an error)
+def ifdh_rm(path):
+
+    result = subprocess.run(["./lib/ifdh.sh", "rm", path], capture_output=True, text=True)
+    if result.returncode != 0:
+        output = result.stdout + result.stderr
+        if 'MISSING' not in output and 'No such file' not in output:
+            raise RuntimeError('ifdh rm ' + path + ' failed:\n' + output)
+
+    return
 
 
 # Ask user for runs you would like to include
@@ -250,7 +263,7 @@ def read_SQL(SQL_file, runs):
 # Produce trigoverlap files for event building
 def trig_overlap(run, trig_path, app_path, scratch_path, singularity):
 
-    os.system('rm trig.list')
+    ifdh_rm('trig.list')
     os.system('echo "' + run + '" >> trig.list')
 
     # does the run have an overlap tar file?
@@ -267,7 +280,8 @@ def trig_overlap(run, trig_path, app_path, scratch_path, singularity):
 # produce beamfetcher part files
 def beamfetcher(run, app_path, scratch_path, singularity, beamfetcher_path):
 
-    os.system('rm beam.list')
+    ifdh_rm('beam.list')
+
     os.system('echo "' + run + '" >> beam.list')
     
     # does the run already have a beamfetcher file?
@@ -362,9 +376,16 @@ def missing_after_transfer(run_number, raw_path, data_path, run_type):
         file.write('\nMissing processed files: ' + str(missing_files) + '\n')
         file.write('\nPercentage processed: ' + str(round((num_processed_files/num_raw_files)*100,2)) + '%')
         
-    os.system('cp R' + run_number + '_summary.txt ' + processed_dir + '.')
+    subprocess.run([
+        "./lib/ifdh.sh",
+        "cp",
+        "R" + run_number + "_summary.txt",
+        processed_dir + "."
+    ], check=True)
+    
     time.sleep(1)
-    os.system('rm R' + run_number + '_summary.txt')
+
+    ifdh_rm("R" + run_number + "_summary.txt")
 
     return
 
@@ -372,7 +393,7 @@ def missing_after_transfer(run_number, raw_path, data_path, run_type):
 # Query active jobs list for the user (for event building jobs)
 def my_jobs(submitted_runs, user):
 
-    os.system('rm current_jobs.txt')
+    ifdh_rm('current_jobs.txt')
     time.sleep(1)
     print('\nFetching active job list...')
     os.system('jobsub_q -G annie --user ' + user + ' >> current_jobs.txt')
@@ -414,7 +435,7 @@ def my_jobs(submitted_runs, user):
 # Query BeamCluster active jobs list for the user
 def my_jobs_BC(submitted_runs, user):
 
-    os.system('rm current_jobs.txt')
+    ifdh_rm('current_jobs.txt')
     time.sleep(1)
     print('\nFetching active job list...')
     os.system('jobsub_q -G annie --user ' + user + ' >> current_jobs.txt')

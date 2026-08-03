@@ -5,6 +5,8 @@ SCRATCH=$2
 trig_path=$3
 BIND=$4
 
+IFDH="${SCRATCH}/lib/ifdh.sh"
+
 while read run; do
 
     echo ""
@@ -30,7 +32,7 @@ EOF
     
     tar -czvf R${run}_TrigOverlap.tar.gz -C ${APP} TrigOverlap_R${run}S0p*
     
-    cp R${run}_TrigOverlap.tar.gz ${trig_path}.
+    "${IFDH}" cp R${run}_TrigOverlap.tar.gz ${trig_path}.
 
     ls -lrth ${trig_path}/R${run}_TrigOverlap.tar.gz
 

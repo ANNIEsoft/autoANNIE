@@ -18,6 +18,7 @@ autoANNIE/
 │   ├── run_trig.sh
 │   ├── run_beamfetcher.sh
 │   ├── merge_it.sh
+│   ├── ifdh.sh
 │   ├── mergeBeamTrees.C
 │   └── copy_grid_output.sh
 ├── BeamCluster/                   # staging area for grid submission scripts that are separate from the event building scripts

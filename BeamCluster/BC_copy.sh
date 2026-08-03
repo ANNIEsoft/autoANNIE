@@ -9,19 +9,19 @@ scratch_output_path=$6
 lappd_filter_path=$7
 mrd_filter_path=$8
 
-IFDH="${SCRATCH}/lib/ifdh.sh"
+IFDH="$(cd "$(dirname "$0")/../lib" && pwd)/ifdh.sh"
 
 echo ""
 echo "Copying file(s)..."
 echo ""
 
 if [ "$WHICH" == "BC" ]; then
-  "${IFDH}" cp $output_path/BeamCluster/BeamCluster_$run.root $processed_path/
+  "${IFDH}" cp -D $output_path/BeamCluster/BeamCluster_$run.root $processed_path/
   echo ""
   ls -lrth $processed_path/BeamCluster_$run.root
   echo ""
 elif [ "$WHICH" == "LAPPD" ]; then
-  "${IFDH}" cp $output_path/BeamCluster/LAPPDBeamCluster_$run.root $LAPPD_processed_path/
+  "${IFDH}" cp -D $output_path/BeamCluster/LAPPDBeamCluster_$run.root $LAPPD_processed_path/
   echo ""
   ls -lrth $LAPPD_processed_path/LAPPDBeamCluster_$run.root
   echo ""

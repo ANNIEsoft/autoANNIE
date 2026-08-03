@@ -6,7 +6,7 @@ output_path=$3
 lappd_EB_path=$4
 run_type=$5
 
-IFDH="${SCRATCH}/lib/ifdh.sh"
+IFDH="$(cd "$(dirname "$0")" && pwd)/ifdh.sh"
 
 # Overwrite not enabled for ifdh cp - skip the file if it exists in /persistent
 file_exists() {

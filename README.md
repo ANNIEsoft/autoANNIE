@@ -55,26 +55,17 @@ autoANNIE/
 
 4. Edit ```master_script.py``` to reflect your username, the bind mounted folders used when entering the singularity container, the name of the ANNIE SQL txt file, and other paths.
 
-5. Run the master script:
+5. Run the master script: ```python3 master_script.py```. Select the required processing mode when prompted: (1) EventBuilderV2 and (2) BeamClusterAnalysis. Provide the necessary user inputs when prompted.
 
-```python3 master_script.py```
-
-Select the required processing mode when prompted:
-
-1 — EventBuilderV2
-2 — BeamClusterAnalysis
-
-Provide the necessary user inputs when prompted.
-
-#### Test your workflow
+### Test your workflow
 
 - Before submitting a large number of runs, test the workflow with a single run. Check that the jobs are submitted successfully, the expected outputs are produced, and the output files are saved to the correct locations.
 
-#### Troubleshooting
+### Troubleshooting
 
 - If jobs fail due to file-access or transfer errors, check for possible dCache issues. If jobs are submitted on or around Wednesday, dCache maintenance may be the cause. Waiting a few hours and retrying is recommended.
 
-#### scripts/ usage
+### scripts/ usage
 
 * `python3 scripts/check_run_status.py`
 * `python3 scripts/copy_runs.py`
@@ -115,7 +106,7 @@ Provide the necessary user inputs when prompted.
 
 - `scripts/is_transferred.sh` displays the final few RAWData part files for a given run. It takes time for the runs to be transferred from the DAQ to the gpvms. If a run is fully transferred, the final part file should be smaller than the average (~50% or so). Checking the timestamp of transfer vs the run completion time is also a good indication; we don't want to event build a run that is only partially transferred. 
 
-Usage: `sh scripts/is_transferred.sh`
+   - Usage: `sh scripts/is_transferred.sh`
 
 - An event building guide using ToolAnalysis can be found here: https://cdcvs.fnal.gov/redmine/projects/annie_experiment/wiki/Event_Building_with_ToolAnalysis
 
@@ -131,6 +122,6 @@ Usage: `sh scripts/is_transferred.sh`
 
 -----------------------
 
-*To check on your jobs, use: ```jobsub_q -G annie --user <<username>>```
-*To cancel your job submissions, use: ```jobsub_rm -G annie <<username>>```
-*To check why your jobs are held, use: ```jobsub_q --hold -G annie <<username>>```
+* To check on your jobs, use: ```jobsub_q -G annie --user <<username>>```
+* To cancel your job submissions, use: ```jobsub_rm -G annie <<username>>```
+* To check why your jobs are held, use: ```jobsub_q --hold -G annie <<username>>```

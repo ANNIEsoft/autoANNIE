@@ -1,10 +1,14 @@
 """
 monitor_jobs.py - memory and disk monitor for autoANNIE grid jobs
 
-Every 10 min: prints your jobs that are HELD or at >= 90% of allocated memory or disk.
-At the end:   appends peak/allocated of each job to <outdir>/<run>/MemDisk_R<run>.summary
-              (last line = MAX) and prints the max per run.
-Standalone:   python3 lib/monitor_jobs.py [user]   -> prints the max per run right now.
+- Runs in the background of `master_script.py` during event building and BeamCluster, and stops at the end. Turn it on or off with monitor_mem_disk, and set the check interval with monitor_interval (default 5 min).
+- Every check: a table of your jobs that are HELD or at ≥ 90% of their memory or disk allocation.
+- When a run finishes, before its files are copied to persistent, writes MemDisk_R<run>.summary into the run’s output folder.
+  - One row per job and a MAX line, all as peak/allocated MB (%).
+  - Resubmitted jobs are added as new rows, never overwritten.
+- At the end, the max per run, plus memory and disk histograms, printed on screen.
+- Standalone: `python3 lib/monitor_jobs.py` shows the per-run max for your jobs in the queue.
+
 """
 import atexit
 import os

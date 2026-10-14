@@ -15,6 +15,7 @@ autoANNIE/
 │   ├── helper_script.py
 │   ├── automated_submission.py
 │   ├── submit_jobs.py
+|   ├── monitor_jobs.py
 │   ├── run_trig.sh
 │   ├── run_beamfetcher.sh
 │   ├── merge_it.sh

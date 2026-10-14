@@ -61,9 +61,9 @@ processed_path = '/pnfs/annie/persistent/processed/'                            
 
 # Always store trigger overlap and beamfetcher files here
 trig_path = '/pnfs/annie/persistent/processed/trigoverlap/'                                        # trigger overlap tar files
-beamfetcher_path = '/pnfs/annie/persistent/processed/BeamFetcherV2/'
+beamfetcher_path = '/pnfs/annie/persistent/processed/BeamFetcherV2/'                               # BeamFetcherV2 root files
 
-data_path = processed_path + 'processed_EBV2/'
+data_path = processed_path + 'processed_EBV2/'                                                     # Processed Data
 beamcluster_path = processed_path + 'BeamClusterTrees/'                                            # BeamCluster root files
 lappd_EB_path = processed_path + 'LAPPD_EB_output/'                                                # contains two subdirectories: LAPPDTree and offsetFit
 lappd_BC_path = beamcluster_path + 'LAPPDBeamClusterTrees/'                                        # filtered events w/ LAPPDs stored in root files

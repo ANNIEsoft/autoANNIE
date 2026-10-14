@@ -1,5 +1,6 @@
 #include <TFile.h>
 #include <TTree.h>
+#include <TBranch.h>
 #include <TChain.h>
 #include <iostream>
 #include <TSystem.h>
@@ -41,16 +42,26 @@ void mergeBeamTrees(const std::string &directory, int runNumber, const std::stri
         }
     }
 
+    // eventNumber restarts in every chunk: copy all other branches fast, then rewrite eventNumber as 0..N-1
+    chain.SetBranchStatus("eventNumber", 0);                 // leave it out of the fast copy
+
     // Create a new ROOT file and save the merged tree
     TFile outputFile(outputFileName.c_str(), "RECREATE");
+
     // Using fast clone, works only for files with identical tree structure
-    // Merges within a minute
     TTree *mergedTree = chain.CloneTree(-1, "fast");
-    mergedTree->Write();
+
+    Int_t eventNumber = 0;
+    TBranch *b = mergedTree->Branch("eventNumber", &eventNumber, "eventNumber/I");
+    for (Long64_t i = 0; i < mergedTree->GetEntries(); i++) {
+        eventNumber = i;
+        b->Fill();
+    }
 
     // Write and close the file
+    mergedTree->Write("", TObject::kOverwrite);
     outputFile.Close();
-    
+
     std::cout << "Merged tree saved to " << outputFileName << std::endl;
 }
 

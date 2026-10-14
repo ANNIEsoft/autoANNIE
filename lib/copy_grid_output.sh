@@ -38,7 +38,7 @@ echo ""
 for file in "$output_path/$run/Processed"*; do
     filename=$(basename "$file")
     if ! file_exists "$data_path/R$run/$filename"; then
-        "${IFDH}" cp "$file" "$data_path/R$run/"
+        cp "$file" "$data_path/R$run/"
     else
         echo "File $filename already exists in $data_path/R$run/. Skipping..."
     fi
@@ -55,7 +55,7 @@ if [ "$run_type" == "beam" ] || [ "$run_type" == "laser" ] || [ "$run_type" == "
     for file in "$output_path/$run/LAPPDTree"*; do
         filename=$(basename "$file")
         if ! file_exists "$lappd_EB_path/LAPPDTree/R$run/$filename"; then
-            "${IFDH}" cp "$file" "$lappd_EB_path/LAPPDTree/R$run/"
+            cp "$file" "$lappd_EB_path/LAPPDTree/R$run/"
         else
             echo "File $filename already exists in $lappd_EB_path/LAPPDTree/R$run/. Skipping..."
         fi
@@ -64,7 +64,7 @@ if [ "$run_type" == "beam" ] || [ "$run_type" == "laser" ] || [ "$run_type" == "
     for file in "$output_path/$run/offsetFitResult"*; do
         filename=$(basename "$file")
         if ! file_exists "$lappd_EB_path/offsetFit/R$run/$filename"; then
-            "${IFDH}" cp "$file" "$lappd_EB_path/offsetFit/R$run/"
+            cp "$file" "$lappd_EB_path/offsetFit/R$run/"
         else
             echo "File $filename already exists in $lappd_EB_path/offsetFit/R$run/. Skipping..."
         fi

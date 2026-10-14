@@ -113,7 +113,8 @@ def read_SQL(SQL_file, runs):
         2023: (datetime(2023, 3, 12, 2, 0, 0), datetime(2023, 11, 5, 1, 0, 0)),
         2024: (datetime(2024, 3, 10, 2, 0, 0), datetime(2024, 11, 3, 1, 0, 0)),
         2025: (datetime(2025, 3, 9, 2, 0, 0), datetime(2025, 11, 2, 1, 0, 0)),
-        2026: (datetime(2026, 3, 8, 2, 0, 0), datetime(2026, 11, 1, 1, 0, 0))
+        2026: (datetime(2026, 3, 8, 2, 0, 0), datetime(2026, 11, 1, 1, 0, 0)),
+        2027: (datetime(2027, 3, 14, 2, 0, 0), datetime(2027, 11, 7, 1, 0, 0))
     }
 
     with open(SQL_file, 'r') as file:
@@ -377,7 +378,6 @@ def missing_after_transfer(run_number, raw_path, data_path, run_type):
         file.write('\nPercentage processed: ' + str(round((num_processed_files/num_raw_files)*100,2)) + '%')
         
     subprocess.run([
-        "./lib/ifdh.sh",
         "cp",
         "R" + run_number + "_summary.txt",
         processed_dir + "."

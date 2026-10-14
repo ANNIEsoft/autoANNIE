@@ -43,7 +43,9 @@ void mergeBeamTrees(const std::string &directory, int runNumber, const std::stri
 
     // Create a new ROOT file and save the merged tree
     TFile outputFile(outputFileName.c_str(), "RECREATE");
-    TTree *mergedTree = chain.CloneTree();
+    // Using fast clone, works only for files with identical tree structure
+    // Merges within a minute
+    TTree *mergedTree = chain.CloneTree(-1, "fast");
     mergedTree->Write();
 
     // Write and close the file

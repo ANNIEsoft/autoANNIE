@@ -25,11 +25,11 @@ def submit_grid_job(run, p_start, p_end, input_path, output_path, TA_tar_name, d
 
     # offsite resources
     if node_loc == "OFFSITE":
-        file.write('jobsub_submit --memory=4000MB --expected-lifetime=6h -G annie --disk=' + disk_space + 'GB --resource-provides=usage_model=OFFSITE --blacklist=Omaha,Swan,Wisconsin,RAL ')
+        file.write('jobsub_submit --memory=6000MB --lines=+FERMIHTC_AutoRelease=True --lines=+FERMIHTC_GraceMemory=2000 --expected-lifetime=6h -G annie --disk=' + disk_space + 'GB --resource-provides=usage_model=OFFSITE --blacklist=Omaha,Swan,Wisconsin,RAL ')
     # FermiGrid
     elif node_loc == "ONSITE":
-        file.write('jobsub_submit --memory=4000MB --expected-lifetime=6h -G annie --disk=' + disk_space + 'GB --resource-provides=usage_model=DEDICATED,OPPORTUNISTIC ')
-    
+        file.write('jobsub_submit --memory=6000MB --lines=+FERMIHTC_AutoRelease=True --lines=+FERMIHTC_GraceMemory=2000 --expected-lifetime=6h -G annie --disk=' + disk_space + 'GB --resource-provides=usage_model=DEDICATED,OPPORTUNISTIC ')
+
     for i in range(int(p_start), int(p_end)+1):
         file.write('-f ${RAWDATA_PATH}/RAWDataR' + run + 'S0p' + str(i) + ' ')
 
@@ -464,7 +464,7 @@ def submit_BC(input_path, output_path, TA_tar_name, data_path, node_loc, lappd_p
 
     # job resources
     lifetime = str(12)       # hr
-    mem = str(2000)         # MB
+    mem = str(2000)          # MB
 
     # For this script, although just the laser + beam run types will need the LAPPDs (and the pedestal files),
     # we can just keep the script the same and attach them anyways. For the grid + run_container scripts we will add conditions.
@@ -508,7 +508,7 @@ def submit_BC(input_path, output_path, TA_tar_name, data_path, node_loc, lappd_p
     file.write('done\n')
     file.write('\n')
 
-    file.write('jobsub_submit --memory=' + mem + 'MB --expected-lifetime=' + lifetime + 'h -G annie --disk=${DISK_SPACE}GB ')
+    file.write('jobsub_submit --memory=' + mem + 'MB --lines=+FERMIHTC_AutoRelease=True --lines=+FERMIHTC_GraceMemory=2000 --expected-lifetime=' + lifetime + 'h -G annie --disk=${DISK_SPACE}GB ')
 
     # offsite resources
     if node_loc == "OFFSITE":

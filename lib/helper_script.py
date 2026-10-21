@@ -610,3 +610,9 @@ def clearScratch(run_list, output_path, BC_scratch_output_path, which_one):
             print(f"Warning: {path_run} does not exist.")
         except Exception as e:
             print(f"Error deleting {path_run}: {e}")
+
+# Wait a few minutes and check the queue again before copying from scratch to persistent
+def jobs_gone(run_index, runs, user, wait_min=3):
+    print('\nWaiting ' + str(wait_min) + ' min to confirm no jobs are left for run ' + runs[run_index] + '...')
+    time.sleep(wait_min * 60)
+    return my_jobs(runs, user)[2][run_index]

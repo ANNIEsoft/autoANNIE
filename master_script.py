@@ -107,7 +107,7 @@ usage_verbose = """
 # -- lifetime: 6hr
 # -- memory: 6GB + 2GB (grace)
 # -- disk: varies depending on number of part files
-#          beam 8 GB + 0.5 GB per part file, AmBe 13 GB + 0.75 GB per part file
+#          beam 7.5 GB + 0.5 GB per part file, AmBe 13 GB + 0.75 GB per part file
 #########################################################################################
 """
 
@@ -303,6 +303,10 @@ if which_mode == '1':      # Event building mode
                     resubs[i] += 1
                 else:                   # if there aren't any missing files, transfer
                     if resubs[i] != -1:
+                        if not hs.jobs_gone(i, runs_to_run, user):
+                            print('\nJobs still running for run ' + runs_to_run[i] + ', transfer postponed\n')
+                            check_count += 1
+                            continue
                         print('\n\nRun ' + runs_to_run[i] + ' is done! It was resubmitted ' + str(resubs[i]) + ' times. Initiating transfer...\n')
                         if monitor_mem_disk:
                             monitor.save_run(runs_to_run[i])
@@ -315,6 +319,10 @@ if which_mode == '1':      # Event building mode
                         check_count += 1
     
             elif check[i] == True and resubs[i] == 2:    # no more jobs, but already re-submitted twice
+                if not hs.jobs_gone(i, runs_to_run, user):
+                    print('\nJobs still running for run ' + runs_to_run[i] + ', transfer postponed\n')
+                    check_count += 1
+                    continue
                 print('\nMax re-submissions reached for run ' + runs_to_run[i] + '! Initiating transfer...\n')
                 if monitor_mem_disk:
                     monitor.save_run(runs_to_run[i])

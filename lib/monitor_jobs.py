@@ -44,6 +44,9 @@ def job_name(args, job_id):
     m = re.search(r"(\d+)_(\d+)_(\d+)", args)
     if m:
         return f"EB_R{m[1]}_p{m[2]}-{m[3]}", m[1]
+    m = re.search(r"PrintDQ_(\d+)", args)
+    if m:
+        return f"DQ_R{m[1]}", f"DQ_{m[1]}"
     return job_id.split("@")[0], "unknown"
 
 
@@ -167,7 +170,7 @@ class Monitor:
         self.thread.join(timeout=10)
         jobs = list(self.jobs.values())
         for run, rows in by_run(jobs).items():
-            if run not in self.written and run != "unknown":
+            if run not in self.written and run != "unknown" and not run.startswith("DQ"):
                 self.write(run, rows)
         print(f"\n[monitor] max peak per run  (files: {self.outdir}<run>/MemDisk_R<run>.summary)")
         print_max(jobs)
@@ -189,4 +192,6 @@ if __name__ == "__main__":
     jobs = query(user)
     if jobs is None:
         sys.exit("jobsub_q failed (token expired?)")
-    print_max(jobs)
+    held = [j for j in jobs if j["held"]]
+    print("\nRUNNING"); print_max([j for j in jobs if not j["held"]])
+    print("\nHELD");    print_max(held)    

@@ -59,8 +59,6 @@ BC_scratch_output_path = output_path + 'beamcluster/'                           
 raw_path = '/pnfs/annie/persistent/raw/raw/'                                                       # raw data location, transferred from the DAQ
 processed_path = '/pnfs/annie/persistent/processed/'                                               # general directory for "processed" data, such as BeamFetcher files, ProcessedData, etc...
 
-#processed_path = '/pnfs/annie/persistent/users/anujgupt/processed/'
-
 # Always store trigger overlap and beamfetcher files here
 trig_path = '/pnfs/annie/persistent/processed/trigoverlap/'                                        # trigger overlap tar files
 beamfetcher_path = '/pnfs/annie/persistent/processed/BeamFetcherV2/'

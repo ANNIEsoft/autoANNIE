@@ -504,21 +504,20 @@ def BC_breakup(run_number, data_path, part_size, run_type):
     # Get the list of processed files
     processed_files = [file for file in os.listdir(processed_dir) if file.startswith(basename + run_number) and not file.endswith(".data")]
 
-    # Count the number of processed files
-    num_processed_files = len(processed_files)
+    # Use the highest part number, not the file count (they differ when parts are missing)
+    last_part = max(int(f.split('p')[-1]) for f in processed_files)
 
-    if num_processed_files <= part_size:
-        return ['0'], [str(num_processed_files - 1)]
+    if last_part < part_size:
+        return ['0'], [str(last_part)]
     else:
-        start_indices = ['0']
+        start_indices = []
         end_indices = []
-        for i in range(part_size, num_processed_files, part_size):
+        for i in range(0, last_part + 1, part_size):
             start_indices.append(str(i))
-            end_indices.append(str(i - 1))
-        end_indices.append(str(num_processed_files - 1))
+            end_indices.append(str(min(i + part_size - 1, last_part)))
 
         return start_indices, end_indices      # lists of starting part file and ending part file
-    
+
 
 # check for BC root files in /scratch
 def check_root_scratch(run_number,required_count,output_path):
@@ -610,3 +609,9 @@ def clearScratch(run_list, output_path, BC_scratch_output_path, which_one):
             print(f"Warning: {path_run} does not exist.")
         except Exception as e:
             print(f"Error deleting {path_run}: {e}")
+
+# Wait a few minutes and check the queue again before copying from scratch to persistent
+def jobs_gone(run_index, runs, user, wait_min=3):
+    print('\nWaiting ' + str(wait_min) + ' min to confirm no jobs are left for run ' + runs[run_index] + '...')
+    time.sleep(wait_min * 60)
+    return my_jobs(runs, user)[2][run_index]

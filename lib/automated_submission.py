@@ -69,11 +69,11 @@ if missing == 'n':
     # calculate disk space requirements
     import math
     if run_type == 'beam' or run_type == 'beam_39':
-        disk_space = str(math.ceil(8 + .5*(step_size+2)))     # refined for beam runs based on job histories
+        disk_space = str(math.ceil(7.5 + .5*(step_size+2)))     # 3+2 -> 10 GB (~70% peak)
     elif run_type == 'AmBe':
-        disk_space = str(math.ceil(13 + .75*(step_size+2)))   # works out to around 15 GB for 2+2
+        disk_space = str(math.ceil(13 + .75*(step_size+2)))     # works out to around 15 GB for 2+2
     else:
-        disk_space = str(math.ceil(8 + .5*(step_size+2)))     # for now, keep beam run configs
+        disk_space = str(math.ceil(7.5 + .5*(step_size+2)))     # Same as beam runs
     #disk_space = str(10)     # typically fine as a default for jobs with less than ~8 part files or so
 
     # Submit the entire batch through multiple jobs, based on the user input (above)
@@ -171,11 +171,11 @@ if missing == 'y':
     # calculate disk space requirements
     import math
     if run_type == 'beam' or run_type == 'beam_39':
-        disk_space = str(math.ceil(8 + .5*(step_size+2)))     # refined for beam runs based on job histories
+        disk_space = str(math.ceil(7.5 + .5*(step_size+2)))     # 1+2 -> 9 GB (resubmissions)
     elif run_type == 'AmBe':
-        disk_space = str(math.ceil(13 + .75*(step_size+2)))   # works out to around 15 GB for 2+2
+        disk_space = str(math.ceil(13 + .75*(step_size+2)))     # works out to around 15 GB for 2+2
     else:
-        disk_space = str(math.ceil(8 + .5*(step_size+2)))     # for now, keep beam run configs
+        disk_space = str(math.ceil(7.5 + .5*(step_size+2)))     # Same as beam runs    
     #disk_space = str(10)     # typically fine as a default - good for Laser single part submissions
 
     # Submit the entire batch through multiple jobs, based on the user input (above)

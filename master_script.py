@@ -59,10 +59,12 @@ BC_scratch_output_path = output_path + 'beamcluster/'                           
 raw_path = '/pnfs/annie/persistent/raw/raw/'                                                       # raw data location, transferred from the DAQ
 processed_path = '/pnfs/annie/persistent/processed/'                                               # general directory for "processed" data, such as BeamFetcher files, ProcessedData, etc...
 
-data_path = processed_path + 'processed_EBV2/'                                                     # Processed Data
+# Always store trigger overlap and beamfetcher files here
 trig_path = '/pnfs/annie/persistent/processed/trigoverlap/'                                        # trigger overlap tar files
+beamfetcher_path = '/pnfs/annie/persistent/processed/BeamFetcherV2/'                               # BeamFetcherV2 root files
+
+data_path = processed_path + 'processed_EBV2/'                                                     # Processed Data
 beamcluster_path = processed_path + 'BeamClusterTrees/'                                            # BeamCluster root files
-beamfetcher_path = processed_path + 'BeamFetcherV2/'                                               # BeamFetcherV2 root files
 lappd_EB_path = processed_path + 'LAPPD_EB_output/'                                                # contains two subdirectories: LAPPDTree and offsetFit
 lappd_BC_path = beamcluster_path + 'LAPPDBeamClusterTrees/'                                        # filtered events w/ LAPPDs stored in root files
 lappd_filter_path = processed_path + 'processed_EBV2_LAPPDFiltered/'                               # filtered, processed data w/ LAPPD events
@@ -105,7 +107,7 @@ usage_verbose = """
 # -- lifetime: 6hr
 # -- memory: 6GB + 2GB (grace)
 # -- disk: varies depending on number of part files
-#          beam 8 GB + 0.5 GB per part file, AmBe 13 GB + 0.75 GB per part file
+#          beam 7.5 GB + 0.5 GB per part file, AmBe 13 GB + 0.75 GB per part file
 #########################################################################################
 """
 
@@ -117,12 +119,12 @@ usage_verbose_BC = """
 # runs_to_run = runs you would like to run the BC toolchain over. It will ask you to enter one at a time
 # node_loc    = run OFFSITE or ONSITE (FermiGrid) jobs
 # source_type = run type ("beam", "cosmic", "AmBe", "LED", "laser")
-# job size    = 40 processed files per BeamCluster job (default, set from monitored disk usage)
+# job size    = 50 processed files per BeamCluster job (default, set from monitored disk usage)
 
 # Grid job specifications:
 # -- lifetime: 12hr
 # -- memory: 2GB + 2GB (grace)
-# -- disk: 12 GB + 0.2 GB per processed file (processed files ~180-200 MB each)
+# -- disk: 12 GB + 0.12 GB per processed file (processed files ~160-200 MB each)
 #########################################################################################
 """
 
@@ -301,6 +303,10 @@ if which_mode == '1':      # Event building mode
                     resubs[i] += 1
                 else:                   # if there aren't any missing files, transfer
                     if resubs[i] != -1:
+                        if not hs.jobs_gone(i, runs_to_run, user):
+                            print('\nJobs still running for run ' + runs_to_run[i] + ', transfer postponed\n')
+                            check_count += 1
+                            continue
                         print('\n\nRun ' + runs_to_run[i] + ' is done! It was resubmitted ' + str(resubs[i]) + ' times. Initiating transfer...\n')
                         if monitor_mem_disk:
                             monitor.save_run(runs_to_run[i])
@@ -313,6 +319,10 @@ if which_mode == '1':      # Event building mode
                         check_count += 1
     
             elif check[i] == True and resubs[i] == 2:    # no more jobs, but already re-submitted twice
+                if not hs.jobs_gone(i, runs_to_run, user):
+                    print('\nJobs still running for run ' + runs_to_run[i] + ', transfer postponed\n')
+                    check_count += 1
+                    continue
                 print('\nMax re-submissions reached for run ' + runs_to_run[i] + '! Initiating transfer...\n')
                 if monitor_mem_disk:
                     monitor.save_run(runs_to_run[i])
@@ -444,7 +454,7 @@ if which_mode == '2':        # BeamCluster
             n_jobs = len(parts_i)
 
             # Disk space for BeamCluster jobs --> feel free to increase this if needed
-            disk_space_factor = str(int(BC_job_size*0.2 + 12))
+            disk_space_factor = str(int(BC_job_size*0.12 + 12))     # 50 files -> 18 GB            
             
             # initial submission
             if BC_check[i] == True and BC_resubs[i] == 0:

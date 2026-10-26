@@ -89,7 +89,7 @@ autoANNIE/
 
 - For the event building, the local copy of ToolAnalysis in ```/exp/annie/app/users/<username>/``` is used to run the ```PreProcessTrigOverlap``` and ```BeamFetcherV2``` toolchains to create the necessary files prior to submitting grid jobs. It is therefore recommended to have an "event building" ToolAnalysis folder present in your ```/exp/annie/app/users/<username>/``` area.
 
-- Given that the `MRDDataDecoder` tool is DLS-dependent, in `lib/helper_script.py` there are [DLS timestamps](https://github.com/S81D/autoANNIE/blob/8472dfb76716f23dbe6f929e2b8119fc0e6667bc/lib/helper_script.py#L95C5-L103C6) that are hardcoded. Steven has included the dates through 2026. If event building is used via these scripts beyond 2026, the corresponding 2027 DLS dates should be added.
+- Given that the `MRDDataDecoder` tool is DLS-dependent, in `lib/helper_script.py` there are [DLS timestamps](https://github.com/S81D/autoANNIE/blob/8472dfb76716f23dbe6f929e2b8119fc0e6667bc/lib/helper_script.py#L95C5-L103C6) that are hardcoded. Steven has included the dates through 2026, and Anuj has added 2027 dates. If event building is used via these scripts beyond 2027, the corresponding 2028 DLS dates should be added.
 
 - There are two options to submit runs: manaully (enter run by run) or through a list. For mass re-production of data, it is more convenient to populate a list named ```runs.list``` with the required run numbers. If using the list, make sure there is a ```runs.list``` present in the working clone in the ```scratch``` directory.
 
@@ -119,7 +119,12 @@ autoANNIE/
    - Run 6139 is a testing run for which the PPS is 10.
    - The PPS configuration is hardcoded in [`lib/submit_jobs.py`](https://github.com/anuj-guptta/autoANNIE/blob/main/lib/submit_jobs.py#L358-L367). If the PPS changes in the future, the corresponding logic will need to be updated.
 
-- Job resources have not been fully optimized. General recommendations are embedded in the code. Memory and wall time are given in `lib/submit_jobs.py`, while disk space is estimated in `lib/automated_submission.py`. Feel free to test and change these as needed.
+- Job resources are optimized using `lib/monitor_jobs.py`.
+   - EventBuilding: Memory set in `lib/submit_jobs.py`. Disk set in `lib/automated_submission.py`.
+   - BeamCluster: Memory set in `lib/submit_jobs.py`. Disk set in `master_script.py`.
+
+- `lib/monitor_jobs.py` monitors memory and disk usage while `master_script.py` runs (`monitor_mem_disk = True`). Every 5 minutes it prints jobs that are held or above 90% usage, and when a run finishes it writes `MemDisk_R<run>.summary` (peak / allocated). 
+   - It can also be run standalone: `python3 lib/monitor_jobs.py`.
 
 -----------------------
 

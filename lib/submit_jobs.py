@@ -23,12 +23,14 @@ def submit_grid_job(run, p_start, p_end, input_path, output_path, TA_tar_name, d
     file.write('mkdir -p $OUTPUT_FOLDER \n')
     file.write('\n')
 
+    mem = 10000 if run_type in ('laser', 'LED') else 6000     # MB
+
     # offsite resources
     if node_loc == "OFFSITE":
-        file.write('jobsub_submit --memory=6000MB --lines=+FERMIHTC_AutoRelease=True --lines=+FERMIHTC_GraceMemory=2000 --expected-lifetime=6h -G annie --disk=' + disk_space + 'GB --resource-provides=usage_model=OFFSITE --blacklist=Omaha,Swan,Wisconsin,RAL ')
+        file.write('jobsub_submit --memory=' + str(mem) + 'MB --lines=+FERMIHTC_AutoRelease=True --lines=+FERMIHTC_GraceMemory=2000 --expected-lifetime=6h -G annie --disk=' + disk_space + 'GB --resource-provides=usage_model=OFFSITE --blacklist=Omaha,Swan,Wisconsin,RAL ')
     # FermiGrid
     elif node_loc == "ONSITE":
-        file.write('jobsub_submit --memory=6000MB --lines=+FERMIHTC_AutoRelease=True --lines=+FERMIHTC_GraceMemory=2000 --expected-lifetime=6h -G annie --disk=' + disk_space + 'GB --resource-provides=usage_model=DEDICATED,OPPORTUNISTIC ')
+        file.write('jobsub_submit --memory=' + str(mem) + 'MB --lines=+FERMIHTC_AutoRelease=True --lines=+FERMIHTC_GraceMemory=2000 --expected-lifetime=6h -G annie --disk=' + disk_space + 'GB --resource-provides=usage_model=DEDICATED,OPPORTUNISTIC ')
 
     for i in range(int(p_start), int(p_end)+1):
         file.write('-f ${RAWDATA_PATH}/RAWDataR' + run + 'S0p' + str(i) + ' ')
@@ -581,8 +583,8 @@ def grid_BC(user, TA_tar_name, name_TA, input_path, run_type):
     file.write('echo "" >> ${DUMMY_OUTPUT_FILE} \n')
     file.write('\n')
     
-    file.write('# Copy datafiles from $CONDOR_INPUT onto worker node (/srv)\n')
-    file.write('${JSB_TMP}/ifdh.sh cp -D $CONDOR_DIR_INPUT/ProcessedData* .\n')
+    file.write('# Move datafiles from $CONDOR_INPUT onto worker node (/srv)\n')
+    file.write('mv $CONDOR_DIR_INPUT/ProcessedData* .\n')
     file.write('${JSB_TMP}/ifdh.sh cp -D $CONDOR_DIR_INPUT/' + TA_tar_name + ' .\n')
     if run_type == 'beam' or run_type == 'laser' or run_type == 'beam_39':      # only copy LAPPD ped folder for runs where LAPPD data is built
         file.write('${JSB_TMP}/ifdh.sh cp -D $CONDOR_DIR_INPUT/${PED}.tar.gz .\n')

@@ -119,12 +119,12 @@ usage_verbose_BC = """
 # runs_to_run = runs you would like to run the BC toolchain over. It will ask you to enter one at a time
 # node_loc    = run OFFSITE or ONSITE (FermiGrid) jobs
 # source_type = run type ("beam", "cosmic", "AmBe", "LED", "laser")
-# job size    = 40 processed files per BeamCluster job (default, set from monitored disk usage)
+# job size    = 50 processed files per BeamCluster job (default, set from monitored disk usage)
 
 # Grid job specifications:
 # -- lifetime: 12hr
 # -- memory: 2GB + 2GB (grace)
-# -- disk: 12 GB + 0.2 GB per processed file (processed files ~180-200 MB each)
+# -- disk: 12 GB + 0.12 GB per processed file (processed files ~160-200 MB each)
 #########################################################################################
 """
 
@@ -454,7 +454,7 @@ if which_mode == '2':        # BeamCluster
             n_jobs = len(parts_i)
 
             # Disk space for BeamCluster jobs --> feel free to increase this if needed
-            disk_space_factor = str(int(BC_job_size*0.2 + 12))
+            disk_space_factor = str(int(BC_job_size*0.12 + 12))     # 50 files -> 18 GB            
             
             # initial submission
             if BC_check[i] == True and BC_resubs[i] == 0:
